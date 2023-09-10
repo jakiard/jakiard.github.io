@@ -1,135 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<style>
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap");
-* {
-  padding: 0;
-  margin: 0;
-}
-body {
-  margin: 50px 0 150px;
-  font-family: "Noto Sans", sans-serif;
-}
-.container {
-  max-width: 1000px;
-  padding: 0 15px;
-  margin: 0 auto;
-}
-h1 {
-  font-size: 2.5rem;
-  opacity: 50%;
-}
-.tanggal {
-  font-size: 1rem;
-}
-.info {
-  font-size: 1rem;
-}
-.table-wrapper {
-  overflow-x: auto;
-  display: grid;
-  place-items: center;
-}
-.table-wrapper::-webkit-scrollbar {
-  height: 8px;
-}
-.table-wrapper::-webkit-scrollbar-thumb {
-  background: var(--darkblue);
-  border-radius: 40px;
-}
-.table-wrapper::::-webkit-scrollbar-track {
-  background: var(--white);
-  border-radius: 40px;
-}
-.table-wrapper table {
-  margin: 50px 0 20px;
-  border-collapse: collapse;
-  text-align: center;
-}
-.table-wrapper table th,
-.table-wrapper table td {
-  padding: 10px;
-  min-width: 75px;
-}
-.table-wrapper table th {
-  color: #fff;
-  background: #1b4965;
-}
-</style>
+  <title>TechNews | Zhakkss</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.7.3/dist/full.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
 </head>
 <body>
-<center>
-  <h1>JADWAL SHALAT</h1>
-  <h1 class="tanggal"></h1>
-</center>
-<div class="container">
-  <div class="table-wrapper">
-    <table>
-      <thead>
-        <tr></tr>
-          <th>SUBUH</th>
-          <th>DZUHUR</th>
-          <th>ASHAR</th>
-          <th>MAGHRIB</th>
-          <th>ISYA</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="subuh"></td>
-          <td class="dzuhur"></td>
-          <td class="ashar"></td>
-          <td class="maghrib"></td>
-          <td class="isya"></td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="navbar bg-neutral text-neutral-content">
+    <a class="btn btn-ghost normal-case text-xl">TechNews</a>
   </div>
-</div>
-<center>
-  <h1 class="info">KOTA PEKANBARU, RIAU</h1>
-  <h1 class="info">DATA AKAN SELALU DI UPDATE SETIAP HARI!</h1>
-</center>
-<script>
-const getDate = new Date();
-const year = getDate.getFullYear();
-const month = getDate.getMonth() + 1;
-const day = getDate.getDate();
-function hari() {
-    if (day < 10)
-        hari = `0${day}`;
-    else {
-      hari = day;
-    }
-    return hari;
-}
-function bulan() {
-    if (month < 10) {
-        bulan = `0${month}`;
-    } else {
-        bulan = month;
-    }
-    return bulan;
-}
-const tanggal = `${year}-${bulan()}-${hari()}`;
+  </br>
+  <div id="output"></div>
+  <script>
+    AOS.init();
     function apiresponse() {
       var xhr = new XMLHttpRequest();
-      xhr.open('GET', 'https://api.banghasan.com/sholat/format/json/jadwal/kota/579/tanggal/'+tanggal);
+      xhr.open('GET', 'https://api-berita-indonesia.vercel.app/antara/tekno/');
       xhr.send();
       xhr.onload = function() {
         if(xhr.status == 200) {
           var res = JSON.parse(this.response);
-            document.querySelector('.subuh').innerHTML = res.jadwal.data.subuh;
-            document.querySelector('.dzuhur').innerHTML = res.jadwal.data.dzuhur;
-            document.querySelector('.ashar').innerHTML = res.jadwal.data.ashar;
-            document.querySelector('.maghrib').innerHTML = res.jadwal.data.maghrib;
-            document.querySelector('.isya').innerHTML = res.jadwal.data.isya;
-            document.querySelector('.tanggal').innerHTML = res.jadwal.data.tanggal;
+          console.log(res.data)
+          let html = '';
+          for(let i = 0; i < res.data.posts.length; i++) {
+            html += `
+<div data-aos="fade-right" class="card lg:card-side bg-base-100 shadow-xl">
+  <figure><img src="${res.data.posts[i].thumbnail}" alt="${res.data.posts[i].title}"/></figure>
+  <div class="card-body">
+    <h2 class="card-title">${res.data.posts[i].title}</h2>
+    <p>${res.data.posts[i].description}</p>
+    <div class="card-actions justify-end">
+      <a href="${res.data.posts[i].link}" class="btn btn-primary">Read More</a>
+    </div>
+  </div>
+</div>
+            `;
+            document.getElementById('output').innerHTML = html;
+          }
         }
       }
     }
     apiresponse()
-</script>
+  </script>
 </body>
-</html>
+  </html
