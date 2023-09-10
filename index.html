@@ -26,13 +26,13 @@
           let html = '';
           for(let i = 0; i < res.data.posts.length; i++) {
             html += `
-<div data-aos="fade-right" class="card lg:card-side bg-base-100 shadow-xl">
+<div data-aos="fade-right" class="card xl:card-side bg-base-100 shadow-xl">
   <figure><img src="${res.data.posts[i].thumbnail}" alt="${res.data.posts[i].title}"/></figure>
   <div class="card-body">
     <h2 class="card-title">${res.data.posts[i].title}</h2>
     <p>${res.data.posts[i].description}</p>
     <div class="card-actions justify-end">
-      <a href="${res.data.posts[i].link}" class="btn btn-primary">Read More</a>
+      <a href="${res.data.posts[i].link}" class="btn btn-primary" style="width: 100%">Read More</a>
     </div>
   </div>
 </div>
